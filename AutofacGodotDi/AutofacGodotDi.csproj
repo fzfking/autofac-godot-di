@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="8.3.0" />
+      <PackageReference Include="GodotSharp" Version="4.4.1" />
+    </ItemGroup>
+    
+
+    <ItemGroup>
+        <Analyzer Include="..\InjectSourceGen\bin\Release\netstandard2.0\InjectSourceGen.dll"/>
+      <ProjectReference Include="..\InjectSourceGen\InjectSourceGen.csproj" />
+    </ItemGroup>
+
+</Project>
