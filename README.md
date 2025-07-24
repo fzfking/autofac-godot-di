@@ -36,7 +36,7 @@ This library is split into two parts for optimal Godot compatibility:
     *   This will clone the repository into the `addons/AutofacGodotDi` folder within your project.
 
 2.  **Add the Source Generator NuGet Package:**
-    *   In your Godot project's C# project add package 
+    *   In your Godot's C# project add package `AutofacGodotDi`
 
 3.  **(Optional) Build:**
     *   You might need to build your project once to ensure the submodule's `.dll` is correctly referenced and the source generator runs.
