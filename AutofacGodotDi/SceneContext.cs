@@ -1,35 +1,37 @@
-﻿using Autofac;
+﻿using System.Collections.Generic;
+using Autofac;
 using Godot;
 
-namespace AutofacGodotDi;
-
-public abstract partial class SceneContext : DependencyBinding
+namespace AutofacGodotDi
 {
-    public override void InstallScope(ILifetimeScope scope)
+    public abstract partial class SceneContext : DependencyBinding
     {
-        base.InstallScope(scope);
-        InjectDependencies();
-    }
-
-    private void InjectDependencies()
-    {
-        var stack = new Stack<Node>();
-        stack.Push(this);
-        while (stack.Count > 0)
+        public override void InstallScope(ILifetimeScope scope)
         {
-            var current = stack.Pop();
-            current.Inject(LifetimeScope);
+            base.InstallScope(scope);
+            InjectDependencies();
+        }
 
-            foreach (var child in current.GetChildren())
+        private void InjectDependencies()
+        {
+            var stack = new Stack<Node>();
+            stack.Push(this);
+            while (stack.Count > 0)
             {
-                if (child is SceneContext childContext)
+                var current = stack.Pop();
+                current.Inject(LifetimeScope);
+
+                foreach (var child in current.GetChildren())
                 {
-                    var childScope = LifetimeScope.BeginLifetimeScope(b => childContext.InstallBindings(b));
-                    childContext.InstallScope(childScope);
-                }
-                else
-                {
-                    stack.Push(child);
+                    if (child is SceneContext childContext)
+                    {
+                        var childScope = LifetimeScope.BeginLifetimeScope(b => childContext.InstallBindings(b));
+                        childContext.InstallScope(childScope);
+                    }
+                    else
+                    {
+                        stack.Push(child);
+                    }
                 }
             }
         }

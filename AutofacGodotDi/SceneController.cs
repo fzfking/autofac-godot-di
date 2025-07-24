@@ -1,53 +1,55 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 
-namespace AutofacGodotDi;
-
-public interface ISceneController
+namespace AutofacGodotDi
 {
-    void ChangeScene(string filePath);
-    void ChangeScene(PackedScene scene);
-}
-
-public class SceneController : ISceneController
-{
-    public event Action<Node> OnChangeScene;
-
-    private readonly SceneTree _rootTree;
-
-    public SceneController(SceneTree rootTree)
+    public interface ISceneController
     {
-        _rootTree = rootTree;
+        void ChangeScene(string filePath);
+        void ChangeScene(PackedScene scene);
     }
 
-    public void ChangeScene(string filePath)
+    public class SceneController : ISceneController
     {
-        Callable.From(() => ChangeSceneByPath(filePath)).CallDeferred();
-    }
+        public event Action<Node> OnChangeScene;
 
-    public void ChangeScene(PackedScene scene)
-    {
-        Callable.From(() => ChangeSceneToPackedScene(scene)).CallDeferred();
-    }
+        private readonly SceneTree _rootTree;
 
-    private void ChangeSceneByPath(string filePath)
-    {
-        var sceneChangeResult = _rootTree.ChangeSceneToFile(filePath);
-        if (sceneChangeResult == Error.Ok)
+        public SceneController(SceneTree rootTree)
         {
-            _rootTree
-                .ToSignal(_rootTree, SceneTree.SignalName.TreeChanged)
-                .OnCompleted(() => OnChangeScene?.Invoke(_rootTree.CurrentScene));
+            _rootTree = rootTree;
         }
-    }
 
-    private void ChangeSceneToPackedScene(PackedScene scene)
-    {
-        var sceneChangeResult = _rootTree.ChangeSceneToPacked(scene);
-        if (sceneChangeResult == Error.Ok)
+        public void ChangeScene(string filePath)
         {
-            _rootTree
-                .ToSignal(_rootTree, SceneTree.SignalName.TreeChanged)
-                .OnCompleted(() => OnChangeScene?.Invoke(_rootTree.CurrentScene));
+            Callable.From(() => ChangeSceneByPath(filePath)).CallDeferred();
+        }
+
+        public void ChangeScene(PackedScene scene)
+        {
+            Callable.From(() => ChangeSceneToPackedScene(scene)).CallDeferred();
+        }
+
+        private void ChangeSceneByPath(string filePath)
+        {
+            var sceneChangeResult = _rootTree.ChangeSceneToFile(filePath);
+            if (sceneChangeResult == Error.Ok)
+            {
+                _rootTree
+                    .ToSignal(_rootTree, SceneTree.SignalName.TreeChanged)
+                    .OnCompleted(() => OnChangeScene?.Invoke(_rootTree.CurrentScene));
+            }
+        }
+
+        private void ChangeSceneToPackedScene(PackedScene scene)
+        {
+            var sceneChangeResult = _rootTree.ChangeSceneToPacked(scene);
+            if (sceneChangeResult == Error.Ok)
+            {
+                _rootTree
+                    .ToSignal(_rootTree, SceneTree.SignalName.TreeChanged)
+                    .OnCompleted(() => OnChangeScene?.Invoke(_rootTree.CurrentScene));
+            }
         }
     }
 }

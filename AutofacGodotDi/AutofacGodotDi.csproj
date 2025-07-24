@@ -2,19 +2,30 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <PackageId>AutofacGodotDi</PackageId>
+        <Version>1.0.9</Version>
+        <Authors>fzfking</Authors>
+        <Description>DI for Godot using Autofac. Includes base classes for integration and a source generator for [Inject] attribute automation.</Description>
+        <PackageTags>Godot;DI;Autofac;SourceGenerator</PackageTags>
+        <RepositoryUrl>https://github.com/fzfking/autofac-godot-di</RepositoryUrl>
+        
+        <DevelopmentDependency>false</DevelopmentDependency>
+        <RootNamespace>AutofacGodotDi</RootNamespace>
+        <AssemblyName>AutofacGodotDi</AssemblyName>
+
+        <ImplicitUsings>false</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Autofac" Version="8.3.0" />
-      <PackageReference Include="GodotSharp" Version="4.4.1" />
+        <PackageReference Include="Autofac" Version="8.3.0" GeneratePathProperty="true" />
+        <PackageReference Include="GodotSharp" Version="4.4.1" GeneratePathProperty="true" />
     </ItemGroup>
     
-
     <ItemGroup>
-        <Analyzer Include="..\InjectSourceGen\bin\Release\netstandard2.0\InjectSourceGen.dll"/>
-      <ProjectReference Include="..\InjectSourceGen\InjectSourceGen.csproj" />
+        <ProjectReference Include="..\InjectSourceGen\InjectSourceGen.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

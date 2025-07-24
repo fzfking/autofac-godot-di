@@ -2,18 +2,18 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace AutofacGodotDi;
-
-public class InjectSyntaxReceiver : ISyntaxReceiver
+namespace AutofacGodotDi
 {
-    public List<MethodDeclarationSyntax> CandidateMethods { get; } = new();
-
-    public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+    public class InjectSyntaxReceiver : ISyntaxReceiver
     {
-        if (syntaxNode is MethodDeclarationSyntax methodDeclaration &&
-            methodDeclaration.AttributeLists.Count > 0)
+        public List<MethodDeclarationSyntax> CandidateMethods { get; } = new();
+
+        public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
         {
-            CandidateMethods.Add(methodDeclaration);
+            if (syntaxNode is MethodDeclarationSyntax { AttributeLists: { Count: > 0 } } methodDeclaration)
+            {
+                CandidateMethods.Add(methodDeclaration);
+            }
         }
     }
 }

@@ -1,22 +1,23 @@
 ﻿using Autofac;
 using Godot;
 
-namespace AutofacGodotDi;
-
-public abstract partial class DependencyBinding : Node
+namespace AutofacGodotDi
 {
-    public ILifetimeScope LifetimeScope { get; protected set; }
-
-    public abstract void InstallBindings(ContainerBuilder builder);
-
-    public virtual void InstallScope(ILifetimeScope scope)
+    public abstract partial class DependencyBinding : Node
     {
-        LifetimeScope = scope;
-    }
+        public ILifetimeScope LifetimeScope { get; protected set; }
 
-    protected override void Dispose(bool disposing)
-    {
-        LifetimeScope?.Dispose();
-        base.Dispose(disposing);
+        public abstract void InstallBindings(ContainerBuilder builder);
+
+        public virtual void InstallScope(ILifetimeScope scope)
+        {
+            LifetimeScope = scope;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            LifetimeScope?.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }
