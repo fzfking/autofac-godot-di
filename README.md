@@ -129,7 +129,7 @@ This library is split into two parts for optimal Godot compatibility:
 
 ### 4. Use Scene Scoping and Scene Changes
 
-*   **Scene Context:** For each scene you intend to load as the `CurrentScene` (e.g., levels, menus), the **root node must inherit from `AutofacGodotDi.SceneContext`**.
+*   **Scene Context:** For each scene you intend to load as the `CurrentScene` (e.g., levels, menus), the **root node may inherit from `AutofacGodotDi.SceneContext`** to create new binding lifetime scope.
     ```csharp
     // LevelOneContext.cs (root node of LevelOne.tscn)
     using Autofac;
@@ -177,7 +177,7 @@ This library is split into two parts for optimal Godot compatibility:
 
 ## Important Notes
 
-*   **Injection Timing:** Dependency injection for a scene's nodes occurs when that scene becomes the `CurrentScene` *and* its root node is a `SceneContext`. This is automatically handled if you use `ISceneController.ChangeScene`.
+*   **Injection Timing:** Dependency injection for a scene's nodes occurs when that scene changed by any method from `SceneController` service provided in library and at first loaded scene after startup.
 *   **Runtime Object Creation:** If you need to create objects and resolve their dependencies at runtime (outside of scene loading), you will need to implement a factory pattern.
     *   You can inject `ILifetimeScope` (either the global one or a scene-specific one from `SceneContext.LifetimeScope`) into your factory.
     *   Use `StaticDependencyInjector.Inject` within the factory to create and get dependencies injected into the new object instance.

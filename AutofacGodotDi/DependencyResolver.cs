@@ -47,6 +47,10 @@ namespace AutofacGodotDi
                 var lifetimeScope = StaticDependencyInjector.GlobalContainer.BeginLifetimeScope(b => sceneContext.InstallBindings(b));
                 sceneContext.InstallScope(lifetimeScope);
             }
+            else
+            {
+                StaticDependencyInjector.GlobalContainer.InjectDependencies(node);
+            }
         }
 
         private void BindSystemServices()
