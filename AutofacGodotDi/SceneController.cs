@@ -7,6 +7,7 @@ namespace AutofacGodotDi
     {
         void ChangeScene(string filePath);
         void ChangeScene(PackedScene scene);
+        Node GetCurrentScene();
     }
 
     public class SceneController : ISceneController
@@ -28,6 +29,11 @@ namespace AutofacGodotDi
         public void ChangeScene(PackedScene scene)
         {
             Callable.From(() => ChangeSceneToPackedScene(scene)).CallDeferred();
+        }
+
+        public Node GetCurrentScene()
+        {
+            return _rootTree.CurrentScene;
         }
 
         private void ChangeSceneByPath(string filePath)
